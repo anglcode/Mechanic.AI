@@ -1,0 +1,27 @@
+{
+  "name": "mechanic.ai",
+  "version": "1.0.0",
+  "main": "dropdown-loader.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anglcode/Mechanic.AI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anglcode/Mechanic.AI/issues"
+  },
+  "homepage": "https://github.com/anglcode/Mechanic.AI#readme",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.13.6",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1"
+  }
+}
