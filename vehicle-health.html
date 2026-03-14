@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vehicle Health</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0f14;
+      --panel: #13161e;
+      --panel-border: #1e2330;
+      --accent: #e8ff47;
+      --accent-dim: rgba(232, 255, 71, 0.12);
+      --text-primary: #eef0f7;
+      --text-secondary: #7a7f96;
+      --text-label: #4e5368;
+      --input-bg: #0a0c11;
+      --input-border: #252a3a;
+      --input-focus: #e8ff47;
+      --radius: 14px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+      background-image:
+        radial-gradient(ellipse 60% 40% at 70% 10%, rgba(232,255,71,0.04) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 10% 90%, rgba(100,120,255,0.05) 0%, transparent 60%);
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 480px;
+      padding: 40px 40px 36px;
+      position: relative;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.03),
+        0 32px 64px rgba(0,0,0,0.5);
+      animation: slideUp 0.5s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Top accent stripe */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 40px; right: 40px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      border-radius: 0 0 4px 4px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 36px;
+    }
+
+    .title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px;
+      letter-spacing: 2px;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    .title span {
+      color: var(--accent);
+    }
+
+    .badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(232,255,71,0.2);
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* Form grid */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      animation: slideUp 0.5s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    .field:nth-child(1) { animation-delay: 0.08s; }
+    .field:nth-child(2) { animation-delay: 0.12s; }
+    .field:nth-child(3) { animation-delay: 0.16s; }
+    .field:nth-child(4) { animation-delay: 0.20s; }
+
+    .field-full {
+      grid-column: 1 / -1;
+      animation-delay: 0.24s;
+    }
+
+    label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-label);
+    }
+
+    input, textarea, select {
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+      width: 100%;
+    }
+
+    select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 20px;
+      padding-right: 40px;
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: var(--text-label);
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--input-focus);
+      background: #0d0f18;
+      box-shadow: 0 0 0 3px rgba(232,255,71,0.08);
+    }
+
+    select:focus {
+      background-image: url('data:image/svg+xml;utf8,<svg fill="%23e8ff47" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') !important;
+    }
+
+    select option {
+      background: var(--panel);
+      color: var(--text-primary);
+    }
+
+    select:invalid {
+      color: var(--text-primary);
+      background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') !important;
+      background-color: var(--input-bg) !important;
+    }
+
+    select::-webkit-validation-bubble,
+    select::-webkit-validation-bubble-arrow,
+    select::-webkit-validation-bubble-top-outer-arrow,
+    select::-webkit-validation-bubble-message {
+      display: none !important;
+    }
+
+    textarea {
+      resize: none;
+      height: 90px;
+      line-height: 1.5;
+    }
+
+    /* Divider */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--panel-border);
+      margin: 28px 0 24px;
+    }
+
+    /* Diagnose button */
+    .btn-diagnose {
+      width: 100%;
+      padding: 16px;
+      background: var(--accent);
+      color: #0d0f14;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 3px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 24px rgba(232,255,71,0.2);
+      animation: slideUp 0.5s 0.3s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    .btn-diagnose::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0);
+      transition: background 0.15s;
+    }
+
+    .btn-diagnose:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(232,255,71,0.35);
+    }
+
+    .btn-diagnose:hover::after {
+      background: rgba(255,255,255,0.1);
+    }
+
+    .btn-diagnose:active {
+      transform: translateY(0);
+    }
+
+    /* Footer note */
+    .footer-note {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-label);
+      margin-top: 20px;
+      letter-spacing: 0.2px;
+      animation: slideUp 0.5s 0.36s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    .footer-note span {
+      color: var(--text-secondary);
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .card { padding: 28px 24px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .field-full { grid-column: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+
+    <div class="header">
+      <h1 class="title">Vehicle <span>Health</span></h1>
+      <div class="badge">
+        <div class="badge-dot"></div>
+        Scan Ready
+      </div>
+    </div>
+
+    <div class="form-grid">
+
+      <div class="field">
+        <label for="make">Make</label>
+        <select id="make">
+          <option value="">Select Make</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="year">Year</label>
+        <select id="year">
+          <option value="">Select Year</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="model">Model</label>
+        <select id="model">
+          <option value="">Select Model</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="km">Total KM</label>
+        <input type="number" id="km" placeholder="e.g. 180000" min="0" max="500000" step="1" />
+      </div>
+
+      <div class="field field-full">
+        <label for="problems">Additional Problems / Error Codes</label>
+        <textarea id="problems" placeholder="e.g. P0301, P0420 — describe any issues you've noticed..."></textarea>
+      </div>
+
+    </div>
+
+    <hr class="divider" />
+
+    <button class="btn-diagnose" type="button" onclick="call();">Diagnose</button>
+    <script src="script1.js"></script>
+    <script src="dropdown-loader.js"></script>
+
+    <p class="footer-note">Enter your vehicle details to receive a full <span>health report</span></p>
+
+  </div>
+
+</body>
+</html>
