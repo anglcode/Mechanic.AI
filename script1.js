@@ -12,6 +12,12 @@ async function call() {
     return;
   }
 
+  // Set button to loading state
+  const diagnoseBtn = document.querySelector('.btn-diagnose');
+  const originalText = diagnoseBtn.textContent;
+  diagnoseBtn.disabled = true;
+  diagnoseBtn.textContent = 'Loading...';
+
   try {
     // Call server endpoint to generate diagnosis
     const response = await fetch('https://mechanicai-production-0470.up.railway.app/api/diagnose-vehicle', {
@@ -61,5 +67,9 @@ async function call() {
   } catch (error) {
     console.error('Error calling server:', error);
     alert('Error: Unable to generate diagnosis. Please ensure the server is running.');
+    
+    // Reset button state on error
+    diagnoseBtn.disabled = false;
+    diagnoseBtn.textContent = originalText;
   }
 }
