@@ -14,7 +14,7 @@ async function call() {
 
   try {
     // Call server endpoint to generate diagnosis
-    const response = await fetch('https://mechanicai-production-0470.up.railway.app', {
+    const response = await fetch('https://mechanicai-production-0470.up.railway.app/api/diagnose-vehicle', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -60,6 +60,6 @@ async function call() {
     }, 100);
   } catch (error) {
     console.error('Error calling server:', error);
-    alert('Error: Unable to generate diagnosis. Please ensure the server is running at http://localhost:3000');
+    alert('Error: Unable to generate diagnosis. Please ensure the server is running.');
   }
 }
