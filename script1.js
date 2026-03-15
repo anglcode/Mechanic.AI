@@ -14,7 +14,7 @@ async function call() {
 
   try {
     // Call server endpoint to generate diagnosis
-    const response = await fetch('http://localhost:3000/api/diagnose-vehicle', {
+    const response = await fetch('https://mechanicai-production-0470.up.railway.app', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
