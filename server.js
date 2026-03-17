@@ -26,11 +26,11 @@ app.post('/api/diagnose-vehicle', async (req, res) => {
     const prompt = `I have a ${year} ${make} ${model} vehicle with ${km} kilometers on the odometer. ${problems ? `Additional issues or error codes: ${problems}` : 'No additional issues reported.'} 
   
 Please provide a comprehensive vehicle health assessment including:
-1. Overall health score (1-5, where 1 is critical and 5 is excellent)
+1. Overall health score (1-5, where 1 is critical and 5 is excellent).
 2. A list of identified problems based on the mileage and reported issues, 3 most pressing first. The problem names should be frased as the jobs to be completed in order to improve the issue. For these jobs, include the kilometers they should be completed at in the title.
 3. For each problem, rate the severity (1-5) and complexity to fix (1-5). The complexity to fix should be based on the average cost and time to complete the repair, with 1 being a simple DIY fix and 5 being a major repair that requires professional service and significant downtime.
 4. If there is a stated problem, assume that all components that could not cause the problem are in good health and do not include them in the diagnosis. For example, if the problem is a brake issue, do not include problems related to the engine or transmission.
-5. If there are no stated problems, provide a general recommendation for maintenance based on the mileage and vehicle age, assuming all standard maintence has been completed up to this point.
+5. If there are no stated problems, provide a general recommendation for maintenance based on the mileage and vehicle age, assuming all standard maintence has been completed up to this point. This could include standard mainteance items like oil changes every 5000km or brake pad replacement every 30000km, but should be based on the specific make and model of the vehicle. For example, if the vehicle is a 2015 Toyota Camry with 100000km, the recommendation might include timing belt replacement at 120000km or oil change at 105000km.
 6. For each new prompt, assume the vehicle has no prior issues and is in good health, except for the problems stated in the prompt. Do not carry over any issues from previous prompts.
 
 
