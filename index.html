@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mechanic.AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0f14;
+      --panel: #13161e;
+      --panel-border: #1e2330;
+      --accent: #e8ff47;
+      --accent-dim: rgba(232, 255, 71, 0.12);
+      --text-primary: #eef0f7;
+      --text-secondary: #7a7f96;
+      --text-label: #4e5368;
+      --input-bg: #0a0c11;
+      --input-border: #252a3a;
+      --input-focus: #e8ff47;
+      --radius: 14px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-image:
+        radial-gradient(ellipse 60% 40% at 70% 10%, rgba(232,255,71,0.04) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 10% 90%, rgba(100,120,255,0.05) 0%, transparent 60%);
+    }
+
+    /* Navigation Bar */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(13, 15, 20, 0.8);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--panel-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 2px;
+      color: var(--text-primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo span {
+      color: var(--accent);
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+    }
+
+    .nav-menu a {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    .nav-menu a:hover {
+      color: var(--accent);
+    }
+
+    .nav-menu a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
+    }
+
+    .nav-menu a:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+    }
+
+    .hero-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      max-width: 1200px;
+      width: 100%;
+      animation: slideUp 0.6s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-text h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 56px;
+      letter-spacing: 3px;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      color: var(--text-primary);
+    }
+
+    .hero-text h1 span {
+      color: var(--accent);
+    }
+
+    .hero-text p {
+      font-size: 18px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 32px;
+      font-weight: 300;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 32px;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(232,255,71,0.2);
+    }
+
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(232,255,71,0.3);
+      background: #f0ff5e;
+    }
+
+    .hero-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .feature-card {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 24px;
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.03),
+        0 32px 64px rgba(0,0,0,0.5);
+      animation: slideUp 0.6s cubic-bezier(0.22,1,0.36,1) both;
+      animation-delay: 0.1s;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 40px; right: 40px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      border-radius: 0 0 4px 4px;
+    }
+
+    .feature-icon {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    .feature-card h3 {
+      font-size: 20px;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+
+    .feature-card p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Features Grid */
+    .features-section {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 80px 20px;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 44px;
+      letter-spacing: 2px;
+      text-align: center;
+      margin-bottom: 60px;
+      color: var(--text-primary);
+    }
+
+    .section-title span {
+      color: var(--accent);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      nav {
+        padding: 16px 20px;
+      }
+
+      .nav-logo {
+        font-size: 22px;
+      }
+
+      .nav-menu {
+        gap: 16px;
+      }
+
+      .hero-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        padding: 0 20px;
+      }
+
+      .hero-text h1 {
+        font-size: 40px;
+        letter-spacing: 2px;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-title {
+        font-size: 32px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      MECHANIC.AI
+    </a>
+    <ul class="nav-menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="vehicle-health.html">Vehicle Health</a></li>
+      <li><a href="#features">Features</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="hero-container">
+      <div class="hero-text">
+        <h1>MECHANIC<span>.AI</span></h1>
+        <p>Intelligent Vehicle Diagnostics at Your Fingertips. Monitor your vehicle's health in real-time and make informed maintenance decisions.</p>
+        <a href="vehicle-health.html" class="cta-button">
+          Check Vehicle Health
+          <span>→</span>
+        </a>
+      </div>
+      <div class="hero-visual">
+        <div class="feature-card">
+          <div class="feature-icon">🔧</div>
+          <h3>Smart Diagnostics</h3>
+          <p>AI-powered vehicle analysis providing comprehensive health assessments and maintenance recommendations.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <section class="features-section" id="features">
+    <h2 class="section-title">Why Choose MECHANIC<span>.AI</span></h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Real-Time Monitoring</h3>
+        <p>Get instant insights into your vehicle's performance metrics and system health status.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Fast Diagnostics</h3>
+        <p>Quick and accurate vehicle analysis powered by advanced AI algorithms.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <h3>Preventive Care</h3>
+        <p>Identify potential issues before they become expensive problems.</p>
+      </div>
+    </div>
+  </section>
+</body>
+</html>
